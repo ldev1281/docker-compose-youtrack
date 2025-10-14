@@ -1,0 +1,25 @@
+services:
+  youtrack-app:
+    image: jetbrains/youtrack:${YOUTRACK_VERSION}
+    container_name: youtrack-app
+    restart: unless-stopped
+    environment:
+      YOUTRACK_BASE_URL: ${YOUTRACK_APP_HOSTNAME}
+    volumes:
+      - ./vol/youtrack-app/opt/youtrack/data:/opt/youtrack/data
+      - ./vol/youtrack-app/opt/youtrack/logs:/opt/youtrack/logs
+      - ./vol/youtrack-app/opt/youtrack/backups:/opt/youtrack/backups
+      - ./vol/youtrack-app/opt/youtrack/conf:/opt/youtrack/conf
+    networks:
+      - proxy-client-youtrack
+      - youtrack-private
+
+networks:
+  proxy-client-youtrack:
+    name: proxy-client-youtrack
+    external: true
+
+  youtrack-private:
+    name: youtrack-private
+    driver: bridge
+    internal: true
