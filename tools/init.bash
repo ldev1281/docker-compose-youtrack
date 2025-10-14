@@ -84,15 +84,12 @@ setup_containers() {
     docker compose up -d
 
     echo "Waiting 60 seconds for services to initialize..."
-    sleep 10
+    sleep 60
     if [[ "$CONFIRM" == "y" ]]; then
-    echo ""
-    echo "YouTrack setup: open ${YOUTRACK_APP_HOSTNAME} to complete configuration."
-    echo "Authentication token (for first login):"
-    echo ==============================
-    docker exec youtrack-app cat /opt/youtrack/conf/internal/services/configurationWizard/wizard_token.txt
-    echo ==============================
-    echo ""
+        echo ""
+        echo "YouTrack setup: open ${YOUTRACK_APP_HOSTNAME} to complete configuration."
+        echo -e "Authentication token (for first login): \033[1;32m$(docker exec youtrack-app cat /opt/youtrack/conf/internal/services/configurationWizard/wizard_token.txt)\033[0m"
+        echo ""
     fi
     echo "Done!"
     echo ""
