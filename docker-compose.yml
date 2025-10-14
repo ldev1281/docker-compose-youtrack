@@ -5,6 +5,7 @@ services:
     restart: unless-stopped
     environment:
       YOUTRACK_BASE_URL: ${YOUTRACK_APP_HOSTNAME}
+      HOSTNAME: ${YOUTRACK_APP_HOSTNAME}
     volumes:
       - ./vol/youtrack-app/opt/youtrack/data:/opt/youtrack/data
       - ./vol/youtrack-app/opt/youtrack/logs:/opt/youtrack/logs

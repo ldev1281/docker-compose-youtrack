@@ -24,8 +24,8 @@ prompt_for_configuration() {
     echo "Base settings:"
     YOUTRACK_VERSION=${CURRENT_YOUTRACK_VERSION}
 
-    read -p "YOUTRACK_APP_HOSTNAME [${YOUTRACK_APP_HOSTNAME:-https://youtrack.example.com}]: " input
-    YOUTRACK_APP_HOSTNAME=${input:-${YOUTRACK_APP_HOSTNAME:-https://youtrack.example.com}}
+    read -p "YOUTRACK_APP_HOSTNAME [${YOUTRACK_APP_HOSTNAME:-youtrack.example.com}]: " input
+    YOUTRACK_APP_HOSTNAME=${input:-${YOUTRACK_APP_HOSTNAME:-youtrack.example.com}}
 }
 
 confirm_and_save_configuration() {
@@ -87,7 +87,7 @@ setup_containers() {
     sleep 60
     if [[ "$CONFIRM" == "y" ]]; then
         echo ""
-        echo "YouTrack setup: open ${YOUTRACK_APP_HOSTNAME} to complete configuration."
+        echo "YouTrack setup: open https://${YOUTRACK_APP_HOSTNAME} to complete configuration."
         echo -e "Authentication token (for first login): \033[1;32m$(docker exec youtrack-app cat /opt/youtrack/conf/internal/services/configurationWizard/wizard_token.txt)\033[0m"
         echo ""
     fi
