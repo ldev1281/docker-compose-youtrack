@@ -8,8 +8,59 @@ set -Eeuo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ENV_FILE="${SCRIPT_DIR}/../.env"
 VOL_DIR="${SCRIPT_DIR}/../vol"
+BACKUP_TASKS_SRC_DIR="${SCRIPT_DIR}/../etc/limbo-backup/rsync.conf.d"
+BACKUP_TASKS_DST_DIR="/etc/limbo-backup/rsync.conf.d"
+
+REQUIRED_TOOLS="docker limbo-backup.bash"
+REQUIRED_NETS="proxy-client-youtrack"
+BACKUP_TASKS="10-youtrack.conf.bash"
 
 CURRENT_YOUTRACK_VERSION="2025.2.100871"
+
+check_requirements() {
+    missed_tools=()
+    for cmd in $REQUIRED_TOOLS; do
+        if ! command -v "$cmd" >/dev/null 2>&1; then
+            missed_tools+=("$cmd")
+        fi
+    done
+
+    if ((${#missed_tools[@]})); then
+        echo "Required tools not found:" >&2
+        for cmd in "${missed_tools[@]}"; do
+            echo "  - $cmd" >&2
+        done
+        echo "Hint: run dev-prod-init.recipe from debian-setup-factory" >&2
+        echo "Abort"
+        exit 127
+    fi
+}
+
+create_networks() {
+    for net in $REQUIRED_NETS; do
+        if docker network inspect "$net" >/dev/null 2>&1; then
+            echo "Required network already exists: $net"
+        else
+            echo "Creating required docker network: $net (driver=bridge)"
+            docker network create --driver bridge "$net" >/dev/null
+        fi
+    done
+}
+
+create_backup_tasks() {
+    for task in $BACKUP_TASKS; do
+        src_file="${BACKUP_TASKS_SRC_DIR}/${task}"
+        dst_file="${BACKUP_TASKS_DST_DIR}/${task}"
+
+        if [[ ! -f "$src_file" ]]; then
+            echo "Warning: backup task not found: $src_file" >&2
+            continue
+        fi
+
+        cp "$src_file" "$dst_file"
+        echo "Created backup task: $dst_file"
+    done
+}
 
 load_existing_env() {
     set -o allexport
@@ -95,6 +146,11 @@ setup_containers() {
     echo ""
 }
 
+# -----------------------------------
+# Main logic
+# -----------------------------------
+check_requirements
+
 if [ -f "$ENV_FILE" ]; then
     echo ".env file found. Loading existing configuration."
     load_existing_env
@@ -104,4 +160,6 @@ fi
 
 prompt_for_configuration
 confirm_and_save_configuration
+create_networks
+create_backup_tasks
 setup_containers
