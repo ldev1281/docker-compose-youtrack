@@ -24,7 +24,7 @@ This project is designed to work with the reverse proxy configuration provided b
 1. **Create the shared Docker network** (if it doesn't already exist):
 
     ```bash
-    docker network create --driver bridge proxy-client-youtrack
+    docker network create --driver bridge --internal proxy-client-youtrack
     ```
 
 2. **Set up the Caddy reverse proxy** by following the instructions in the [`docker-compose-caddy`](https://github.com/ldev1281/docker-compose-caddy) repository.
@@ -128,7 +128,7 @@ CMD_AFTER_BACKUP="docker compose --project-directory /docker/youtrack up -d"
 
 CMD_BEFORE_RESTORE="docker compose --project-directory /docker/youtrack down || true"
 CMD_AFTER_RESTORE=(
-  "docker network create --driver bridge proxy-client-youtrack || true"
+  "docker network create --driver bridge --internal proxy-client-youtrack || true"
   "docker compose --project-directory /docker/youtrack up -d"
 )
 
