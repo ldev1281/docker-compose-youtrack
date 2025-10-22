@@ -113,10 +113,10 @@ setup_containers() {
     echo "Stopping all containers and removing volumes..."
     docker compose down -v || true
 
-    if [ -d "$VOL_DIR" ]; then
+       if [ -d "$VOL_DIR" ]; then
         echo "The 'vol' directory exists:"
-        echo " - Type 'y' to clear it completely (new installation)."
-        echo " - Type 'n' (or press Enter) to keep data."
+        echo " - In case of a new install type 'y' to clear its contents. WARNING! This will remove all previous configuration files and stored data."
+        echo " - In case of an upgrade/installing a new application type 'n' (or press Enter)."
         read -p "Clear it now? (y/N): " CONFIRM
         echo ""
         if [[ "$CONFIRM" == "y" ]]; then
