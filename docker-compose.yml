@@ -13,14 +13,8 @@ services:
       - ./vol/youtrack-app/opt/youtrack/conf:/opt/youtrack/conf
     networks:
       - proxy-client-youtrack
-      - youtrack-private
 
 networks:
   proxy-client-youtrack:
     name: proxy-client-youtrack
     external: true
-
-  youtrack-private:
-    name: youtrack-private
-    driver: bridge
-    internal: true
