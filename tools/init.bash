@@ -77,6 +77,9 @@ prompt_for_configuration() {
 
     read -p "YOUTRACK_APP_HOSTNAME [${YOUTRACK_APP_HOSTNAME:-youtrack.example.com}]: " input
     YOUTRACK_APP_HOSTNAME=${input:-${YOUTRACK_APP_HOSTNAME:-youtrack.example.com}}
+
+    read -p "YOUTRACK_JAVA_XMX [${YOUTRACK_JAVA_XMX:-2048m}]: " input
+    YOUTRACK_JAVA_XMX=${input:-${YOUTRACK_JAVA_XMX:-2048m}}
 }
 
 confirm_and_save_configuration() {
@@ -84,6 +87,7 @@ confirm_and_save_configuration() {
         "# YouTrack"
         "YOUTRACK_VERSION=${YOUTRACK_VERSION}"
         "YOUTRACK_APP_HOSTNAME=${YOUTRACK_APP_HOSTNAME}"
+        "YOUTRACK_JAVA_XMX=${YOUTRACK_JAVA_XMX}"    
         ""
     )
 
@@ -130,6 +134,10 @@ setup_containers() {
     mkdir -p "${VOL_DIR}/youtrack-app/opt/youtrack/conf"     && chown 13001:13001 "${VOL_DIR}/youtrack-app/opt/youtrack/conf"
     mkdir -p "${VOL_DIR}/youtrack-app/opt/youtrack/logs"     && chown 13001:13001 "${VOL_DIR}/youtrack-app/opt/youtrack/logs"
     mkdir -p "${VOL_DIR}/youtrack-app/opt/youtrack/backups"  && chown 13001:13001 "${VOL_DIR}/youtrack-app/opt/youtrack/backups"
+
+    echo "# Managed by init.bash" > "${VOL_DIR}/youtrack-app/opt/youtrack/conf/youtrack.jvmoptions"
+    echo "-Xmx${YOUTRACK_JAVA_XMX}" >> "${VOL_DIR}/youtrack-app/opt/youtrack/conf/youtrack.jvmoptions"
+    chown 13001:13001 "${VOL_DIR}/youtrack-app/opt/youtrack/conf/youtrack.jvmoptions"
 
     echo "Starting containers..."
     docker compose up -d
