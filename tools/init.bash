@@ -102,7 +102,7 @@ confirm_and_save_configuration() {
     while :; do
         read -p "Proceed with this configuration? (y/n): " CONFIRM
         [[ "$CONFIRM" == "y" ]] && break
-        [[ "${CONFIRM:-}" == "n" ]] && { echo "Configuration aborted by user."; exit 1; }
+        [[ "$CONFIRM" == "n" ]] && { echo "Configuration aborted by user."; exit 1; }
     done
 
     printf "%s\n" "${CONFIG_LINES[@]}" >"$ENV_FILE"
