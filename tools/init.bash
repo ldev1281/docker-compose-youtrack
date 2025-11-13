@@ -112,8 +112,7 @@ confirm_and_save_configuration() {
 
 setup_containers() {
     echo "Stopping all containers and removing volumes..."
-    docker compose down -v || true
-
+    docker compose down -v
        if [ -d "$VOL_DIR" ]; then
         echo "The 'vol' directory exists:"
         echo " - In case of a new install type 'y' to clear its contents. WARNING! This will remove all previous configuration files and stored data."
