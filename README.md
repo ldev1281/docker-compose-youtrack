@@ -21,17 +21,17 @@ cd /docker/youtrack
 You can either download the **latest** release:
 
 ```bash
-curl -L "https://github.com/ldev1281/docker-compose-youtrack/releases/latest/download/docker-compose-youtrack.tar.gz" -o docker-compose-youtrack.tar.gz
-tar xzf docker-compose-youtrack.tar.gz
-rm docker-compose-youtrack.tar.gz
+curl -fsSL "https://github.com/ldev1281/docker-compose-youtrack/releases/latest/download/docker-compose-youtrack.tar.gz" -o /tmp/docker-compose-youtrack.tar.gz
+tar xzf /tmp/docker-compose-youtrack.tar.gz -C /docker/youtrack
+rm -f /tmp/docker-compose-youtrack.tar.gz
 ```
 
 Or download a **specific** release (for example `2025.2.100871`):
 
 ```bash
-curl -L "https://github.com/ldev1281/docker-compose-youtrack/releases/download/2025.2.100871/docker-compose-youtrack.tar.gz" -o docker-compose-youtrack.tar.gz
-tar xzf docker-compose-youtrack.tar.gz
-rm docker-compose-youtrack.tar.gz
+curl -fsSL "https://github.com/ldev1281/docker-compose-youtrack/releases/download/2025.2.100871/docker-compose-youtrack.tar.gz" -o /tmp/docker-compose-youtrack.tar.gz
+tar xzf /tmp/docker-compose-youtrack.tar.gz -C /docker/youtrack
+rm -f /tmp/docker-compose-youtrack.tar.gz
 ```
 
 After extraction, the contents of the archive should be located directly in `/docker/youtrack/` (next to `docker-compose.yml`).
