@@ -7,15 +7,36 @@ The stack integrates with Caddy reverse proxy for automatic HTTPS and persistent
 
 ## Setup Instructions
 
-### 1. Clone the Repository
+### 1. Download and Extract the Release
 
-Clone the project to your server in the `/docker/youtrack/` directory:
+Download the packaged release to your server into the `/docker/youtrack/` directory and extract it there.
+
+Create the target directory and enter it:
 
 ```bash
 mkdir -p /docker/youtrack
 cd /docker/youtrack
-git clone https://github.com/ldev1281/docker-compose-youtrack.git .
 ```
+
+You can either download the **latest** release:
+
+```bash
+curl -L "https://github.com/ldev1281/docker-compose-youtrack/releases/latest/download/docker-compose-youtrack.tar.gz" -o docker-compose-youtrack.tar.gz
+tar xzf docker-compose-youtrack.tar.gz
+rm docker-compose-youtrack.tar.gz
+```
+
+Or download a **specific** release (for example `2025.2.100871`):
+
+```bash
+curl -L "https://github.com/ldev1281/docker-compose-youtrack/releases/download/2025.2.100871/docker-compose-youtrack.tar.gz" -o docker-compose-youtrack.tar.gz
+tar xzf docker-compose-youtrack.tar.gz
+rm docker-compose-youtrack.tar.gz
+```
+
+After extraction, the contents of the archive should be located directly in `/docker/youtrack/` (next to `docker-compose.yml`).
+
+---
 
 ### 2. Create Docker Network and Set Up Reverse Proxy
 
@@ -38,7 +59,7 @@ Once Caddy is installed, it will automatically detect the YouTrack container via
 Configuration Variables:
 
 | Variable Name              | Description                                   | Default Value             |
-|----------------------------|-----------------------------------------------|----------------------------|
+|----------------------------|-----------------------------------------------|---------------------------|
 | `YOUTRACK_VERSION`         | Docker image tag for YouTrack                 | `2025.2.100871`           |
 | `YOUTRACK_APP_HOSTNAME`    | Public domain name for YouTrack               | `youtrack.example.com`    |
 
